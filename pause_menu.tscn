@@ -46,10 +46,32 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Resume"
 
+[node name="FOVContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="FOVLabel" type="Label" parent="VBoxContainer/FOVContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "FOV:"
+
+[node name="FOVSlider" type="HSlider" parent="VBoxContainer/FOVContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 60.0
+max_value = 120.0
+step = 5.0
+value = 75.0
+
+[node name="FOVValue" type="Label" parent="VBoxContainer/FOVContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "75"
+
 [node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Quit"
 
 [connection signal="pressed" from="VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="value_changed" from="VBoxContainer/FOVContainer/FOVSlider" to="." method="_on_fov_slider_value_changed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
