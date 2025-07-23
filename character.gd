@@ -5,6 +5,7 @@ const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const MAX_CHARGE_TIME = 2.0 # seconds
 const MAX_CHARGE_MULTIPLIER = 4.0  #
+#PUT IN GUITODO!
 # The maximum multiplier for the jump velocity when fully charged.
 
 # gravity from the project settings to be synced with RigidBody nodes.
@@ -45,6 +46,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
+	
 	if is_on_floor() and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		var jump_label = get_tree().root.get_node("JumpChargeLabel")
 		
