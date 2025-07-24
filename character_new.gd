@@ -20,8 +20,10 @@ var jump_charge = 0.0
 var is_charging = false
 
 @onready var camera = $Camera3D
+@onready var third_person_camera = $ThirdPersonCamera
 @onready var collision_shape = $CollisionShape3D
 @onready var mesh = $CSGMesh3D
+var is_third_person = false
 
 signal player_died
 
@@ -29,32 +31,51 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	spawn_position = global_position
 	spawn_rotation = rotation
+	third_person_camera.current = false
+
+func toggle_camera_mode():
+	is_third_person = !is_third_person
+	if is_third_person:
+		camera.current = false
+		third_person_camera.current = true
+	else:
+		camera.current = true
+		third_person_camera.current = false
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * .005) #need to make these based on sensitivies in a GUI TODO!
-		camera.rotate_x(-event.relative.y * .005)
-		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+		if is_third_person:
+			third_person_camera.rotate_x(-event.relative.y * .005)
+			third_person_camera.rotation.x = clamp(third_person_camera.rotation.x, -PI/2, PI/2)
+		else:
+			camera.rotate_x(-event.relative.y * .005)
+			camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 
 func crouch():
 	is_crouching = true
 	# scale down the character and camera when crouching
 	collision_shape.scale.y = 0.6
 	mesh.scale.y = 0.6
-	camera.position.y = 1.0
+	if not is_third_person:
+		camera.position.y = 1.0
 	
 func stand():
 	is_crouching = false
 	#restore original scale when standing
 	collision_shape.scale.y = 1.0
 	mesh.scale.y = 1.0
-	camera.position.y = 1.5
+	if not is_third_person:
+		camera.position.y = 1.5
 
 func _unhandled_key_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		var pause_menu = get_node_or_null("/root/World/PauseMenu")
 		if pause_menu:
 			pause_menu.toggle_pause()
+	
+	if event.keycode == KEY_V:
+		toggle_camera_mode()
 
 func _physics_process(delta):
 	#  check ded
@@ -103,12 +124,6 @@ func _physics_process(delta):
 	velocity.x = move_toward(velocity.x, direction.x, HORIZONTAL_ACCELERATION * delta)
 	velocity.z = move_toward(velocity.z, direction.z, HORIZONTAL_ACCELERATION * delta)
 
-	#var angle = 5
-	#var t = delta * 6
-	
-	#TODO! consider how i want to do the view movementr
-	#if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED: 
-	#	rotation_degrees = rotation_degrees.lerp(Vector3(input_dir.normalized().y * angle, rotation_degrees.y, -input_dir.normalized().x * angle), t)
 	
 	move_and_slide()
 	force_update_transform()

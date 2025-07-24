@@ -14,9 +14,21 @@ var jump_charge = 0.0
 var is_charging = false
 
 @onready var camera = $Camera3D
+@onready var third_person_camera = $ThirdPersonCamera
+var is_third_person = false
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	third_person_camera.enabled = false
+
+func toggle_camera_mode():
+	is_third_person = !is_third_person
+	if is_third_person:
+		camera.enabled = false
+		third_person_camera.enabled = true
+	else:
+		camera.enabled = true
+		third_person_camera.enabled = false
 
 func toggle_fullscreen():
 	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
@@ -29,8 +41,12 @@ func toggle_fullscreen():
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * .005)
-		camera.rotate_x(-event.relative.y * .005)
-		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+		if is_third_person:
+			third_person_camera.rotate_x(-event.relative.y * .005)
+			third_person_camera.rotation.x = clamp(third_person_camera.rotation.x, -PI/2, PI/2)
+		else:
+			camera.rotate_x(-event.relative.y * .005)
+			camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 
 func _unhandled_key_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
