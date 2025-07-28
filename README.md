@@ -1,7 +1,7 @@
 
 # This readme is entirely useless
 
-# this is  a basic skeleton of a game i plan to work on
+# this is  a basic skeleton of a game i plan to work on with a friend
 
 
 do you really want to test this?
