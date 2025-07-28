@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckfbotvo4qc7b"]
+
+[ext_resource type="Script" uid="uid://blavwsprceive" path="res://ManaManager.gd" id="1_glv2v"]
+[ext_resource type="Script" uid="uid://dl7hshek3ycmu" path="res://CardSystem.gd" id="2_uu6xs"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_glv2v")
+
+[node name="ManaBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 403.0
+offset_top = 535.0
+offset_right = 768.0
+offset_bottom = 580.0
+max_value = 10.0
+value = 3.0
+
+[node name="ReshuffleButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 807.0
+offset_top = 534.0
+offset_right = 888.0
+offset_bottom = 584.0
+
+[node name="DeckCountLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 48.0
+offset_top = 574.0
+offset_right = 88.0
+offset_bottom = 597.0
+
+[node name="GraveyardCountLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 577.0
+offset_right = 1079.0
+offset_bottom = 600.0
+
+[node name="CardSystem" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = 42.0
+offset_bottom = 41.0
+script = ExtResource("2_uu6xs")
+
+[node name="CardDisplayContainer" type="HBoxContainer" parent="CardSystem"]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 334.0
+offset_right = 318.0
+offset_bottom = 374.0
